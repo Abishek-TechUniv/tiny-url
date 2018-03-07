@@ -1,4 +1,4 @@
-const Models = require('../../models');
+const { url } = require('../../models');
 
 const MINIFIED_LENGTH = 6;
 
@@ -8,16 +8,16 @@ const insertUrl =
 
   const shortUrl = hash.slice(start, start + length);
 
-  return Models.urls.findOrCreate({
+  return url.findOrCreate({
     where: {
-      short_url: shortUrl,
+      shortUrl,
     },
     defaults: {
-      long_url: longUrl,
+      longUrl,
     },
   }).spread((urlObj, created) => {
     if (!created) {
-      if (urlObj.long_url === longUrl) {
+      if (urlObj.longUrl === longUrl) {
         return shortUrl;
       }
       return insertUrl(longUrl, hash, start + 1);

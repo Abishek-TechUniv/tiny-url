@@ -1,7 +1,7 @@
 const server = require('../../src/server');
 
 describe('Testing the minify route', () => {
-  test('The route should reply with 201 for PUT request', (done) => {
+  test('The route should reply with 201 for POST request', (done) => {
     const options = {
       method: 'POST',
       url: '/minify',
@@ -16,7 +16,7 @@ describe('Testing the minify route', () => {
     });
   });
 
-  test('The route should reply with a string for PUT request', (done) => {
+  test('The route should reply with a string for POST request', (done) => {
     const options = {
       method: 'POST',
       url: '/minify',
@@ -31,7 +31,7 @@ describe('Testing the minify route', () => {
     });
   });
 
-  test('The route should reply with a string of length 6 for PUT request', (done) => {
+  test('The route should reply with a string of length 6 for POST request', (done) => {
     const options = {
       method: 'POST',
       url: '/minify',

@@ -2,8 +2,8 @@ const insert = require('../helpers/insert');
 const hash = require('../helpers/hash');
 
 module.exports = [{
-  method: 'PUT',
-  path: '/url',
+  method: 'POST',
+  path: '/minify',
   handler: (request, response) => {
     const { longUrl } = request.payload;
     insert(longUrl, hash(longUrl)).then((result) => {
