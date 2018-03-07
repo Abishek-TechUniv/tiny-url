@@ -1,30 +1,15 @@
-const { url } = require('../../models');
-const md5 = require('md5');
+const insert = require('../helpers/insert');
+const hash = require('../helpers/hash');
 
-const minify = (longUrl, start) => md5(longUrl).slice(start, start + 6);
-
-
-const routes = [
-  { // CREATE
-    method: 'POST',
-    path: '/minify',
-    handler: (request, reply) => {
-      const { longUrl } = request.payload;
-      url.findOrCreate({
-        where: { shortUrl: minify(longUrl, 0) },
-        defaults: { shortUrl: minify(longUrl, 0), longUrl },
-      }).then(([result, completed]) => {
-        if (!completed) {
-          return url.create({
-            shortUrl: minify(longUrl, 6),
-            longUrl,
-          });
-        }
-        return result;
-      })
-        .then(result => reply(result.shortUrl).code(201));
-    },
+module.exports = [{
+  method: 'PUT',
+  path: '/url',
+  handler: (request, response) => {
+    const { longUrl } = request.payload;
+    insert(longUrl, hash(longUrl)).then((result) => {
+      response(result).code(201);
+    }).catch(() => {
+      response('There was an error').code(500);
+    });
   },
-];
-
-module.exports = routes;
+}];
