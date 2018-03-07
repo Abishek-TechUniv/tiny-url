@@ -1,4 +1,10 @@
-const minify = require('./minify');
 const maxify = require('./maxify');
+const minify = require('./minify');
 
-module.exports = [].concat(minify, maxify);
+module.exports = [{
+  path: '/',
+  method: 'GET',
+  handler: (request, response) => {
+    response('pong');
+  },
+}].concat(maxify, minify);

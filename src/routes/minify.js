@@ -11,10 +11,10 @@ const routes = [
     handler: (request, reply) => {
       const { longUrl } = request.payload;
       url.findOrCreate({
-        where: { longUrl, shortUrl: minify(longUrl, 0) },
+        where: { shortUrl: minify(longUrl, 0) },
         defaults: { shortUrl: minify(longUrl, 0), longUrl },
       }).then(([result, completed]) => {
-        if (completed) {
+        if (!completed) {
           return url.create({
             shortUrl: minify(longUrl, 6),
             longUrl,
