@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "ci_test": "NODE_ENV=ci_test sequelize db:migrate:undo:all && NODE_ENV=ci_test sequelize db:migrate && NODE_ENV=ci_test node_modules/.bin/jest --coverage --runInBand --forceExit",
     "test": "NODE_ENV=test sequelize db:migrate:undo:all && NODE_ENV=test sequelize db:migrate && jest",
     "start": "sequelize db:migrate:undo:all && sequelize db:migrate && nodemon src/server.js"
   },
