@@ -1,10 +1,13 @@
 const maxify = require('./maxify');
 const minify = require('./minify');
 
-module.exports = [{
+module.exports = redisClient => [{
   path: '/',
   method: 'GET',
-  handler: (request, response) => {
-    response('pong');
+  handler: (request, reply) => {
+    redisClient.hgetall('users', (err, result) => reply(result));
   },
-}].concat(maxify, minify);
+}].concat(
+  maxify(redisClient),
+  minify(redisClient),
+);

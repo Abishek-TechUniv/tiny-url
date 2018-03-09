@@ -2,11 +2,18 @@
 
 module.exports = (sequelize, DataTypes) => {
   const url = sequelize.define('url', {
-    longUrl: DataTypes.STRING,
-    shortUrl: { type: DataTypes.STRING, unique: true },
+    longUrl: DataTypes.STRING(2046),
+    shortUrl: {
+      type: DataTypes.STRING(6),
+      unique: true,
+      validate:
+       { len: [6, 6] },
+    },
   }, {});
-  url.associate = function (models) {
-    // associations can be defined here
-  };
+
+  url.newUrl = (shortUrl, longUrl) => url.findOrCreate({
+    where: { shortUrl },
+    defaults: { longUrl },
+  });
   return url;
 };

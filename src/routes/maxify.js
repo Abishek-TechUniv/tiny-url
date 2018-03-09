@@ -1,16 +1,25 @@
 const { url } = require('../../models');
 
-const routes = [
+module.exports = redisClient => [
   { // FIND
     method: 'GET',
     path: '/maxify/{shortUrl}',
     handler: (request, reply) => {
       const { shortUrl } = request.params;
-      url.findOne({
-        where: { shortUrl },
-      }).then(result => reply(result.longUrl).code(201));
+      redisClient.hget('urls', shortUrl, (err, redisReply) => {
+        if (redisReply !== null) { return reply(redisReply); }
+        url.findOne({
+          where: { shortUrl },
+        }).then((urlEntry) => {
+          if (urlEntry !== null) {
+            const { longUrl } = urlEntry;
+            redisClient.hset('urls', shortUrl, longUrl);
+            reply({ longUrl });
+          } else {
+            reply('Invalid input url').code(404);
+          }
+        });
+      });
     },
   },
 ];
-
-module.exports = routes;

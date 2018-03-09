@@ -1,15 +1,44 @@
 const Hapi = require('hapi');
+const Good = require('good');
+const Redis = require('redis');
 const Routes = require('./routes');
 
 const server = new Hapi.Server();
 
 server.connection({
+  port: 8080,
   host: 'localhost',
-  port: (Number(process.argv[2]) || 7070),
 });
 
-server.route(Routes);
+const redisClient = Redis.createClient();
 
-if (!module.parent) server.start();
+server.route(Routes(redisClient));
+
+server.register([
+  {
+    register: Good,
+    options: {
+      reporters: {
+        console: [{
+          module: 'good-squeeze',
+          name: 'Squeeze',
+          args: [{
+            response: '*',
+            log: '*',
+          }],
+        }, {
+          module: 'good-console',
+        }, 'stdout'],
+      },
+    },
+  }], () => {
+  server.start((error) => {
+    if (!error) {
+      console.log('Server started');
+    } else {
+      console.log(error);
+    }
+  });
+});
 
 module.exports = server;

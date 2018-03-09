@@ -8,21 +8,14 @@ const insertUrl =
 
   const shortUrl = hash.slice(start, start + length);
 
-  return url.findOrCreate({
-    where: {
-      shortUrl,
-    },
-    defaults: {
-      longUrl,
-    },
-  }).spread((urlObj, created) => {
+  return url.newUrl(shortUrl, longUrl).spread((urlObj, created) => {
     if (!created) {
       if (urlObj.longUrl === longUrl) {
-        return shortUrl;
+        return { shortUrl, longUrl };
       }
       return insertUrl(longUrl, hash, start + 1);
     }
-    return shortUrl;
+    return { shortUrl, longUrl };
   });
 };
 
