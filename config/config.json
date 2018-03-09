@@ -7,8 +7,9 @@
     "dialect": "postgres",
     "logging": false,
     "pool": {
-      "min": 10,
-      "max": 100
+      "max": 100,
+      "min": 1,
+      "acquire": 10000
     }
   },
   "test": {
@@ -21,7 +22,14 @@
   "production": {
     "username": "root",
     "password": null,
-    "database": "database_production",
+    "database": "tinyurl_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "ci_test": {
+    "username": "abishekaditya",
+    "password": null,
+    "database": "tinyurl_test",
     "host": "127.0.0.1",
     "dialect": "postgres"
   }
