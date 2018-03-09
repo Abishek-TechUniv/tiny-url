@@ -11,11 +11,11 @@ const insertUrl =
   return url.newUrl(shortUrl, longUrl).spread((urlObj, created) => {
     if (!created) {
       if (urlObj.longUrl === longUrl) {
-        return { shortUrl, longUrl };
+        return { shortUrl, longUrl, created };
       }
       return insertUrl(longUrl, hash, start + 1);
     }
-    return { shortUrl, longUrl };
+    return { shortUrl, longUrl, created };
   });
 };
 
