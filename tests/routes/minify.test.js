@@ -26,7 +26,7 @@ describe('Testing the minify route', () => {
     };
 
     server.inject(options, (result) => {
-      expect(typeof result.result).toBe(typeof '');
+      expect(typeof result.result.shortUrl).toBe(typeof '');
       done();
     });
   });
@@ -41,7 +41,7 @@ describe('Testing the minify route', () => {
     };
 
     server.inject(options, (result) => {
-      expect(result.result.length).toBe(6);
+      expect(result.result.shortUrl.length).toBe(6);
       done();
     });
   });
