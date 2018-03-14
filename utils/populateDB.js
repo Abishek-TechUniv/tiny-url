@@ -4,7 +4,7 @@ const redis = require('redis');
 
 module.exports = (num) => {
   const shortUrls = {};
-  const client = redis.createClient();
+  const client = redis.createClient({ host: '0.0.0.0' });
 
   for (let i = 0; i < num; i += 1) {
     const longUrl = `http://${(Math.random() + 1).toString(36).slice(2, 10)}${(`000000000${i}`).slice(-7)}.com`;

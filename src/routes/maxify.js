@@ -7,7 +7,12 @@ module.exports = redisClient => [
     handler: (request, reply) => {
       const { shortUrl } = request.params;
       redisClient.hget('urls', shortUrl, (err, redisReply) => {
-        if (redisReply !== null) { return reply(redisReply); }
+        if (redisReply !== null) {
+          const { longUrl } = redisReply;
+          return reply({
+            longUrl,
+          });
+        }
         url.findOne({
           where: { shortUrl },
         }).then((urlEntry) => {

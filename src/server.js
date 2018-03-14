@@ -6,7 +6,7 @@ const Routes = require('./routes');
 const server = new Hapi.Server();
 
 server.connection({
-  port: 8081,
+  port: 8080,
   host: 'localhost',
 });
 
@@ -32,13 +32,7 @@ server.register([
       },
     },
   }], () => {
-  server.start((error) => {
-    if (!error) {
-      console.log('Server started');
-    } else {
-      console.log(error);
-    }
-  });
+  server.start();
 });
 
 module.exports = server;
